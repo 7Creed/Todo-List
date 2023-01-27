@@ -196,6 +196,7 @@ class App {
     this.$noteText = document.getElementById("text");
     this.$del = document.querySelector(".del");
     this.$todo = document.querySelector(".todo");
+    this.$todoCompleted = document.querySelector(".todo-completed");
     // this.$action = document.querySelector(".action");
     this.$check = document.getElementsByClassName("check");
     // console.log(this.$del)
@@ -233,15 +234,52 @@ class App {
 
     this.displayNotes(this.noteArr);
     this.deleteNote();
+    // this.completeNotes();
     // this.completeNote();
     this.$noteText.value = "";
   }
 
+  // displayNotes(arr) {
+  //   console.log(arr);
+  //   if (arr.length > 0) {
+  //     arr === this.noteArr
+  //       ? (this.$notes.innerHTML = arr
+  //           .map(
+  //             (item) => ` <div class="text-start" data-id="${item.id}">
+  //                             <p>${item.text}</p>
+  //                             <div class="actions">
+  //                                 <div class="action">
+  //                                   <button class="check" data-id="${item.id}">&#x2713;</button>
+  //                                   <button class="del" data-id="${item.id}">&#128473;</button>
+  //                                 </div>
+  //                              </div>
+  //                          </div>
+  //                          `
+  //           )
+  //           .join(""))
+  //       : (this.$notesCompleted.innerHTML = arr
+  //           .map(
+  //             (item) => ` <div class="text-end" data-id="${item.id}">
+  //                             <p>${item.text}</p>
+  //                             <div class="actionsII">
+  //                                 <div class="action">
+  //                                 <button class="check" data-id="${item.id}">&#x2713;</button>
+  //                                   <button class="del" data-id="${item.id}">&#128473;</button>
+  //                                 </div>
+  //                              </div>
+  //                          </div>
+  //                          `
+  //           )
+  //           .join(""));
+  //   } else {
+  //     this.$notes.innerHTML = "No item";
+  //   }
+  // }
+
+
   displayNotes(arr) {
-    console.log(arr);
     if (arr.length > 0) {
-      arr === this.noteArr
-        ? (this.$notes.innerHTML = arr
+      this.$notes.innerHTML = arr
             .map(
               (item) => ` <div class="text-start" data-id="${item.id}">
                               <p>${item.text}</p>
@@ -254,53 +292,37 @@ class App {
                            </div>
                            `
             )
-            .join(""))
-        : (this.$notesCompleted.innerHTML = arr
-            .map(
-              (item) => ` <div class="text-end" data-id="${item.id}">
-                              <p>${item.text}</p>
-                              <div class="actionsII">
-                                  <div class="action">
-                                  <button class="check" data-id="${item.id}">&#x2713;</button>
-                                    <button class="del" data-id="${item.id}">&#128473;</button>
-                                  </div>
-                               </div>
-                           </div>
-                           `
-            )
-            .join(""));
+            .join("");
     } else {
       this.$notes.innerHTML = "No item";
     }
   }
 
-  // completeNotes(arr) {
-  //   console.log(arr);
-  //   if (arr.length > 0) {
-  //     this.$notes.innerHTML = arr
-  //       .map(
-  //         (item) => ` <div class="text-start" data-id="${item.id}">
-  //                             <p>${item.text}</p>
-  //                             <div class="actions">
-  //                                 <div class="action">
-  //                                   <button class="check" data-id="${item.id}">&#x2713;</button>
-  //                                   <button class="del" data-id="${item.id}">&#128473;</button>
-  //                                 </div>
-  //                              </div>
-  //                          </div>
-  //                          `
-  //       )
-  //       .join("");
-  //   } else {
-  //     this.$notes.innerHTML = "No item";
-  //   }
-  // }
+  completeNotes(arr) {
+    if (arr.length > 0) {
+      this.$notesCompleted.innerHTML = arr
+        .map(
+          (item) => ` <div class="text-start" data-id="${item.id}">
+                              <p>${item.text}</p>
+                              <div class="actions">
+                                  <div class="action">
+                                    <button class="check" data-id="${item.id}">&#x2713;</button>
+                                    <button class="del" data-id="${item.id}">&#128473;</button>
+                                  </div>
+                               </div>
+                           </div>
+                           `
+        )
+        .join("");
+    } else {
+      this.$notesCompleted.innerHTML = "No item";
+    }
+  }
 
   deleteNote() {
     this.$todo.addEventListener("click", (e) => {
       e.stopImmediatePropagation();
       const dell = e.target.closest(".del");
-      const check = e.target.closest(".check");
 
       if (dell) {
         console.log("delete");
@@ -313,6 +335,17 @@ class App {
         );
         this.displayNotes(this.noteArr);
       }
+
+      console.log(this.noteArr);
+      
+    });
+  }
+
+  completeNote() {
+    this.$todoCompleted.addEventListener("click", (e) => {
+      e.stopImmediatePropagation();
+      const check = e.target.closest(".check");
+      if (!check) return;
       if (check) {
         console.log(check);
         this.noteArr.forEach((item) => {
@@ -328,28 +361,10 @@ class App {
         //   (item) => item.id === +check.dataset.id
         // )];
         console.log(this.checked);
-      this.displayNotes(this.checked);
+        this.completeNotes(this.checked);
       }
-
-      console.log(this.noteArr);
-      
-      
     });
   }
-
-  // completeNote() {
-  //   this.$todo.addEventListener("click", (e) => {
-  //     e.stopImmediatePropagation();
-  //     const check = e.target.closest(".check");
-  //     if (check) {
-  //       console.log('check');
-
-  //     }
-  //     // check.addEventListener("click", () => {
-  //     //   console.log("Yaga");
-  //     // });
-  //   });
-  // }
 }
 
 new App();
