@@ -311,27 +311,29 @@ class App {
         this.noteArr = this.noteArr.filter(
           (note) => note.id !== Number(dell.dataset.id)
         );
+        this.displayNotes(this.noteArr);
       }
-      // if (check) {
-      //   console.log(check);
-      //   this.noteArr.forEach((item) => {
-      //     if (item.id === +check.dataset.id) {
-      //       this.checked.push(item);
-      //       this.noteArr = this.noteArr.filter(
-      //         (note) => note.id !== +check.dataset.id
-      //       );
-      //     }
-      //   });
-      //   // will be worked on later
-      //   // this.checked = [...this.checked, this.noteArr.filter(
-      //   //   (item) => item.id === +check.dataset.id
-      //   // )];
-      //   console.log(this.checked);
-      // }
+      if (check) {
+        console.log(check);
+        this.noteArr.forEach((item) => {
+          if (item.id === +check.dataset.id) {
+            this.checked.push(item);
+            this.noteArr = this.noteArr.filter(
+              (note) => note.id !== +check.dataset.id
+            );
+          }
+        });
+        // will be worked on later
+        // this.checked = [...this.checked, this.noteArr.filter(
+        //   (item) => item.id === +check.dataset.id
+        // )];
+        console.log(this.checked);
+      this.displayNotes(this.checked);
+      }
 
       console.log(this.noteArr);
-      this.displayNotes(this.noteArr);
-      this.displayNotes(this.checked);
+      
+      
     });
   }
 
