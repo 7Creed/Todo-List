@@ -219,6 +219,8 @@ class App {
           this.addNote({ text }, this.noteArr);
         }
       });
+    this.unChecked();
+    this.deleteCheckNote();
   }
 
   addNote(note, arr) {
@@ -350,30 +352,61 @@ class App {
     });
   }
 
-  completeNote() {
+  unChecked() {
     this.$todoCompleted.addEventListener("click", (e) => {
-      e.stopImmediatePropagation();
       const check = e.target.closest(".check");
-      if (!check) return;
       if (check) {
-        console.log(check);
-        this.noteArr.forEach((item) => {
-          if (item.id === +check.dataset.id) {
-            this.checked.push(item);
-            this.noteArr = this.noteArr.filter(
-              (note) => note.id !== +check.dataset.id
-            );
+        const checkValue = check.dataset.id;
+
+        this.checked.forEach((item) => {
+          if (item.id === +checkValue) {
+            this.noteArr.push(item);
+            this.displayNotes(this.noteArr);
           }
         });
-        // will be worked on later
-        // this.checked = [...this.checked, this.noteArr.filter(
-        //   (item) => item.id === +check.dataset.id
-        // )];
-        console.log(this.checked);
+
+        this.checked = this.checked.filter((item) => item.id !== +checkValue);
         this.completeNotes(this.checked);
       }
     });
   }
+
+  deleteCheckNote() {
+    this.$todoCompleted.addEventListener("click", (e) => {
+      const deleteBtn = e.target.closest(".del");
+
+      if (!deleteBtn) return;
+
+      const deleteBtnID = deleteBtn.dataset.id;
+      this.checked = this.checked.filter((item) => item.id !== +deleteBtnID);
+      this.completeNotes(this.checked);
+    });
+  }
+
+  // completeNote() {
+  //   this.$todoCompleted.addEventListener("click", (e) => {
+  //     e.stopImmediatePropagation();
+  //     const check = e.target.closest(".check");
+  //     if (!check) return;
+  //     if (check) {
+  //       console.log(check);
+  //       this.noteArr.forEach((item) => {
+  //         if (item.id === +check.dataset.id) {
+  //           this.checked.push(item);
+  //           this.noteArr = this.noteArr.filter(
+  //             (note) => note.id !== +check.dataset.id
+  //           );
+  //         }
+  //       });
+  //       // will be worked on later
+  //       // this.checked = [...this.checked, this.noteArr.filter(
+  //       //   (item) => item.id === +check.dataset.id
+  //       // )];
+  //       console.log(this.checked);
+  //       this.completeNotes(this.checked);
+  //     }
+  //   });
+  // }
 }
 
 new App();
