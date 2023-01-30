@@ -216,18 +216,15 @@ class App {
 
         if (text) {
           //add note
-          this.addNote({ text });
+          this.addNote({ text }, this.noteArr);
         }
       });
   }
 
-  addNote(note) {
+  addNote(note, arr) {
     const newNote = {
       text: note.text,
-      id:
-        this.noteArr.length > 0
-          ? this.noteArr[this.noteArr.length - 1].id + 1
-          : 1,
+      id: arr.length > 0 ? arr[arr.length - 1].id + 1 : 1,
     };
     this.noteArr = [...this.noteArr, newNote];
     console.log(this.noteArr);
@@ -276,12 +273,11 @@ class App {
   //   }
   // }
 
-
   displayNotes(arr) {
     if (arr.length > 0) {
       this.$notes.innerHTML = arr
-            .map(
-              (item) => ` <div class="text-start" data-id="${item.id}">
+        .map(
+          (item) => ` <div class="text-start" data-id="${item.id}">
                               <p>${item.text}</p>
                               <div class="actions">
                                   <div class="action">
@@ -291,8 +287,8 @@ class App {
                                </div>
                            </div>
                            `
-            )
-            .join("");
+        )
+        .join("");
     } else {
       this.$notes.innerHTML = "No item";
     }
@@ -323,6 +319,7 @@ class App {
     this.$todo.addEventListener("click", (e) => {
       e.stopImmediatePropagation();
       const dell = e.target.closest(".del");
+      const checkedArr = e.target.closest(".check");
 
       if (dell) {
         console.log("delete");
@@ -336,8 +333,20 @@ class App {
         this.displayNotes(this.noteArr);
       }
 
-      console.log(this.noteArr);
-      
+      if (checkedArr) {
+        // console.log(checkedArr)
+        this.noteArr.forEach((note) => {
+          if (note.id === Number(checkedArr.dataset.id))
+            this.checked.push(note);
+        });
+        this.noteArr = this.noteArr.filter(
+          (note) => note.id !== Number(checkedArr.dataset.id)
+        );
+        this.displayNotes(this.noteArr);
+        this.completeNotes(this.checked);
+      }
+
+      // console.log(this.noteArr);
     });
   }
 
