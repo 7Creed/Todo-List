@@ -221,6 +221,15 @@ class App {
       });
     this.unChecked();
     this.deleteCheckNote();
+    const todoNote = localStorage.getItem("todo");
+    const todoNoteArr = JSON.parse(todoNote);
+    // console.log(todoNoteArr);
+    this.displayNotes(todoNoteArr);
+
+    const todoChecked = localStorage.getItem("todoChecked");
+    const todoCheckedArr = JSON.parse(todoChecked);
+    // console.log(todoCheckedArr);
+    this.completeNotes(todoCheckedArr);
   }
 
   addNote(note, arr) {
@@ -229,6 +238,9 @@ class App {
       id: arr.length > 0 ? arr[arr.length - 1].id + 1 : 1,
     };
     this.noteArr = [...this.noteArr, newNote];
+    const strNote = JSON.stringify(this.noteArr);
+
+    localStorage.setItem("todo", strNote);
     console.log(this.noteArr);
 
     this.displayNotes(this.noteArr);
@@ -332,6 +344,9 @@ class App {
         this.noteArr = this.noteArr.filter(
           (note) => note.id !== Number(dell.dataset.id)
         );
+        const strNote = JSON.stringify(this.noteArr);
+
+        localStorage.setItem("todo", strNote);
         this.displayNotes(this.noteArr);
       }
 
@@ -344,6 +359,13 @@ class App {
         this.noteArr = this.noteArr.filter(
           (note) => note.id !== Number(checkedArr.dataset.id)
         );
+        const strChecked = JSON.stringify(this.checked);
+
+        localStorage.setItem("todoChecked", strChecked);
+
+        const strNote = JSON.stringify(this.noteArr);
+
+        localStorage.setItem("todo", strNote);
         this.displayNotes(this.noteArr);
         this.completeNotes(this.checked);
       }
@@ -367,6 +389,9 @@ class App {
 
         this.checked = this.checked.filter((item) => item.id !== +checkValue);
         this.completeNotes(this.checked);
+        const strChecked = JSON.stringify(this.checked);
+
+        localStorage.setItem("todoChecked", strChecked);
       }
     });
   }
@@ -379,6 +404,9 @@ class App {
 
       const deleteBtnID = deleteBtn.dataset.id;
       this.checked = this.checked.filter((item) => item.id !== +deleteBtnID);
+      const strChecked = JSON.stringify(this.checked);
+
+      localStorage.setItem("todoChecked", strChecked);
       this.completeNotes(this.checked);
     });
   }
