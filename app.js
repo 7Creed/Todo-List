@@ -216,34 +216,40 @@ class App {
 
         if (text) {
           //add note
-          this.addNote({ text }, this.noteArr);
+          this.addNote({ text });
         }
       });
     this.unChecked();
     this.deleteCheckNote();
     const todoNote = localStorage.getItem("todo");
     const todoNoteArr = JSON.parse(todoNote);
-    // console.log(todoNoteArr);
-    this.displayNotes(todoNoteArr);
+
+    if (!todoNoteArr) return;
+    this.noteArr = [...todoNoteArr];
+    this.displayNotes(this.noteArr);
 
     const todoChecked = localStorage.getItem("todoChecked");
     const todoCheckedArr = JSON.parse(todoChecked);
-    // console.log(todoCheckedArr);
-    this.completeNotes(todoCheckedArr);
+    this.checked = [...todoCheckedArr];
+    this.completeNotes(this.checked);
   }
 
-  addNote(note, arr) {
+  addNote(note) {
     const newNote = {
       text: note.text,
-      id: arr.length > 0 ? arr[arr.length - 1].id + 1 : 1,
+      id:
+        this.noteArr.length > 0
+          ? this.noteArr[this.noteArr.length - 1].id + 1
+          : 1,
     };
     this.noteArr = [...this.noteArr, newNote];
-    const strNote = JSON.stringify(this.noteArr);
+    // console.log(this.noteArr);
 
+    const strNote = JSON.stringify(this.noteArr);
     localStorage.setItem("todo", strNote);
-    console.log(this.noteArr);
 
     this.displayNotes(this.noteArr);
+
     this.deleteNote();
     // this.completeNotes();
     // this.completeNote();
